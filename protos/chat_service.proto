@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package chat;
+
+enum MessageType {
+  MESSAGE = 0;
+  JOIN    = 1;
+  LEAVE   = 2;
+  SYSTEM  = 3;
+}
+
+message ChatMessage {
+  string room        = 1;   // sala
+  string text        = 2;   // texto da msg (para MESSAGE)
+  string sender_id   = 3;   // preenchido pelo servidor
+  string sender_name = 4;   // opcional (se quiser puxar do user)
+  int64  timestamp   = 5;   // epoch seconds (servidor)
+  MessageType type   = 6;   // MESSAGE / JOIN / LEAVE / SYSTEM
+}
+
+service ChatService {       
+  rpc Chat (stream ChatMessage) returns (stream ChatMessage);
+}
